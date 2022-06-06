@@ -2,7 +2,6 @@ import mimetypes
 
 from django.conf import settings as django_settings
 from django.http import FileResponse
-# from django.views.static import serve
 from rest_framework.exceptions import APIException
 
 from core import models, helpers

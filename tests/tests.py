@@ -152,3 +152,37 @@ class DocumentTestCase(TestCaseBase):
             # check if an error was caught
             errors = response.get('non_field_errors')
             self.assertIsNone(errors, 'Specified URL should have the same file extension')
+
+    def test_downloading_ZIP_file(self):
+        self._create_document_with_file_example(extension='zip')
+
+        # consuming endpoint
+        path = '%s%s' % (reverse('document-download'), '/documents/reviews/example.zip')
+        response = self.client.get(path)
+
+        self.assertEquals(
+            response.get('Content-Disposition'),
+            'inline; filename="example_0.zip"'
+        )
+
+    def test_downloading_ZIP_file_with_revision(self):
+        self._create_document_with_file_example(extension='zip')
+        self._create_document_with_file_example(extension='zip')
+
+        # consuming endpoint
+        path = '%s%s' % (reverse('document-download'), '/documents/reviews/example.zip')
+        response = self.client.get(path)
+
+        self.assertEquals(
+            response.get('Content-Disposition'),
+            'inline; filename="example_1.zip"'
+        )
+
+        # consuming endpoint
+        path = '%s%s' % (reverse('document-download'), '/documents/reviews/example.zip?revision=0')
+        response = self.client.get(path)
+
+        self.assertEquals(
+            response.get('Content-Disposition'),
+            'inline; filename="example_0.zip"'
+        )
