@@ -16,7 +16,7 @@ class DocumentDownloadService:
         self.path = path
 
     def get_real_revision(self, revision: int = None):
-        if not revision:
+        if revision is None:
             current_revision = models.Document.objects.find_current_revision(
                 user_id=self.user.id,
                 path=self.path,
