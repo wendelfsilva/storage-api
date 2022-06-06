@@ -45,3 +45,15 @@ Run `python manage.py test` for run all tests. The app will automatically look f
 ## Further help
 
 To get more help on the on Django check out the [Getting started with Django](https://www.djangoproject.com/start/) or [Django REST framework](https://www.django-rest-framework.org/) page.
+
+## Users available
+
+For default five users were created, bellow the credentials:
+
+| Username | Password |
+|----------|----------|
+| user1    | 123456   |
+| user2    | 123456   |
+| user3    | 123456   |
+| user4    | 123456   |
+| user5    | 123456   |
