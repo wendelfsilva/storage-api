@@ -62,7 +62,7 @@ class DocumentTestCase(TestCaseBase):
 
     @staticmethod
     def _get_file_path(extension: str):
-        media_dir = Path(__file__).resolve().parent / 'media'
+        media_dir = Path(__file__).resolve().parent / 'files'
         return media_dir / f'file_example.{extension}'
 
     def _create_document_with_file_example(self, extension: str):
