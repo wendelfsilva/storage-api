@@ -25,12 +25,11 @@ class DocumentSerializer(serializers.HyperlinkedModelSerializer):
             'id',
             'url',
             'path',
+            'revision',
             'file',
             'file_name',
-            'revision',
-            'current_revision',
-            'user',
             'uploaded_at',
+            'user',
         ]
         validators = [validators.PathAndFileExtensionValidator()]
 

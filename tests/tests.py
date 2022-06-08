@@ -6,10 +6,8 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from rest_framework.test import APITestCase, override_settings
 
-from core import models
-
 # Setting up temporary media root
-MEDIA_ROOT = tempfile.mkdtemp()
+MEDIA_ROOT = Path(tempfile.mkdtemp())
 
 
 # Create your tests here.
@@ -75,8 +73,9 @@ class DocumentTestCase(TestCaseBase):
             }
 
             # consuming endpoint
+            path = '%s%s' % (reverse('document-list'), 'upload/')
             return self.client.post(
-                path=reverse('document-list'),  # kwargs={'pk': 1}
+                path=path,
                 data=payload,
             ).json()
 
@@ -123,17 +122,6 @@ class DocumentTestCase(TestCaseBase):
         self.assertGreater(sec_response['id'], 0)
         self.assertEquals(sec_response['revision'], 1)
 
-    def test_uploading_ZIP_file_has_changed_current_revision(self):
-        fst_response = self._create_document_with_file_example(extension='zip')
-        sec_response = self._create_document_with_file_example(extension='zip')
-
-        fst_obj = models.Document.objects.get(pk=fst_response['id'])
-        sec_obj = models.Document.objects.get(pk=sec_response['id'])
-
-        # check if revision was changed to objects
-        self.assertFalse(fst_obj.current_revision)
-        self.assertTrue(sec_obj.current_revision)
-
     def test_uploading_ZIP_file_with_path_extension_is_equal_file_extension(self):
         file_path = self._get_file_path(extension='zip')
         with file_path.open(mode='rb') as file:
@@ -144,8 +132,9 @@ class DocumentTestCase(TestCaseBase):
             }
 
             # consuming endpoint
+            path = '%s%s' % (reverse('document-list'), 'upload/')
             response = self.client.post(
-                path=reverse('document-list'),  # kwargs={'pk': 1}
+                path=path,
                 data=payload,
             ).json()
 
@@ -166,6 +155,8 @@ class DocumentTestCase(TestCaseBase):
         )
 
     def test_downloading_ZIP_file_with_revision(self):
+        shutil.rmtree(MEDIA_ROOT, ignore_errors=True)
+
         self._create_document_with_file_example(extension='zip')
         self._create_document_with_file_example(extension='zip')
 
